@@ -1,8 +1,13 @@
 import React, { useState } from 'react';
 import { Search, Play } from 'lucide-react';
 import { MOCK_CHANNELS } from '../constants';
+import { Channel } from '../types';
 
-const LiveTV: React.FC = () => {
+interface LiveTVProps {
+  onPlay: (channel: Channel) => void;
+}
+
+const LiveTV: React.FC<LiveTVProps> = ({ onPlay }) => {
   const categories = ['All', 'Favorites', 'Sports', 'News', 'Movies', 'Kids', 'Documentary'];
   const [activeCategory, setActiveCategory] = useState('All');
   const [searchTerm, setSearchTerm] = useState('');
@@ -50,7 +55,11 @@ const LiveTV: React.FC = () => {
       {/* Channel Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 overflow-y-auto pb-20">
         {filteredChannels.map(channel => (
-          <div key={channel.id} className="bg-zinc-900/50 border border-zinc-800/50 rounded-xl p-3 flex items-center space-x-4 hover:bg-zinc-800/50 hover:border-zinc-700 cursor-pointer group transition-all">
+          <div 
+            key={channel.id} 
+            onClick={() => onPlay(channel)}
+            className="bg-zinc-900/50 border border-zinc-800/50 rounded-xl p-3 flex items-center space-x-4 hover:bg-zinc-800/50 hover:border-zinc-700 cursor-pointer group transition-all"
+          >
             <div className="w-12 h-12 bg-zinc-950 rounded-full flex items-center justify-center shrink-0 border border-zinc-800">
                <img src={channel.logo} alt={channel.name} className="w-8 h-8 rounded-full opacity-80" />
             </div>

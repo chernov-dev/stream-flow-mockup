@@ -5,9 +5,10 @@ import { MOCK_MOVIES, MOCK_SERIES } from '../constants';
 
 interface MoviesSeriesProps {
   type: 'MOVIES' | 'SERIES';
+  onSelectMedia: (item: MediaItem) => void;
 }
 
-const MoviesSeries: React.FC<MoviesSeriesProps> = ({ type }) => {
+const MoviesSeries: React.FC<MoviesSeriesProps> = ({ type, onSelectMedia }) => {
   const data: MediaItem[] = type === 'MOVIES' ? MOCK_MOVIES : MOCK_SERIES;
   const title = type === 'MOVIES' ? 'Movies' : 'TV Series';
 
@@ -17,7 +18,11 @@ const MoviesSeries: React.FC<MoviesSeriesProps> = ({ type }) => {
       
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
         {data.map((item) => (
-          <div key={item.id} className="group relative cursor-pointer">
+          <div 
+            key={item.id} 
+            className="group relative cursor-pointer"
+            onClick={() => onSelectMedia(item)}
+          >
             <div className="aspect-[2/3] rounded-lg overflow-hidden bg-zinc-800 shadow-lg transition-transform duration-300 group-hover:scale-105 group-hover:shadow-indigo-500/20 group-hover:shadow-2xl">
               <img 
                 src={item.cover} 

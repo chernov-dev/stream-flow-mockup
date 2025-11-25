@@ -1,8 +1,14 @@
 import React from 'react';
-import { Play } from 'lucide-react';
+import { Play, Info } from 'lucide-react';
 import { MOCK_MOVIES, MOCK_CHANNELS } from '../constants';
+import { MediaItem } from '../types';
 
-const Dashboard: React.FC = () => {
+interface DashboardProps {
+  onSelectMedia: (item: MediaItem) => void;
+  onPlay: (item: MediaItem) => void;
+}
+
+const Dashboard: React.FC<DashboardProps> = ({ onSelectMedia, onPlay }) => {
   const featuredMovie = MOCK_MOVIES[0];
 
   return (
@@ -11,7 +17,7 @@ const Dashboard: React.FC = () => {
       <div className="relative h-[60vh] md:h-[70vh] w-full">
         <div className="absolute inset-0">
           <img 
-            src={featuredMovie.cover} 
+            src={featuredMovie.backdrop || featuredMovie.cover} 
             alt="Hero" 
             className="w-full h-full object-cover"
           />
@@ -26,15 +32,23 @@ const Dashboard: React.FC = () => {
             <span className="text-green-400 font-semibold">{featuredMovie.rating * 20}% Match</span>
             <span>{featuredMovie.year}</span>
             <span>{featuredMovie.category}</span>
+            <span>{featuredMovie.duration}</span>
           </div>
           <p className="text-zinc-300 text-sm md:text-base line-clamp-3 mb-6">{featuredMovie.description}</p>
           
           <div className="flex space-x-4">
-            <button className="flex items-center bg-white text-black px-6 py-3 rounded font-bold hover:bg-zinc-200 transition-colors">
+            <button 
+              onClick={() => onPlay(featuredMovie)}
+              className="flex items-center bg-white text-black px-6 py-3 rounded-lg font-bold hover:bg-zinc-200 transition-colors"
+            >
               <Play size={20} className="mr-2 fill-black" />
               Play
             </button>
-            <button className="flex items-center bg-zinc-800/80 text-white px-6 py-3 rounded font-bold hover:bg-zinc-700 transition-colors backdrop-blur-sm">
+            <button 
+              onClick={() => onSelectMedia(featuredMovie)}
+              className="flex items-center bg-zinc-800/80 text-white px-6 py-3 rounded-lg font-bold hover:bg-zinc-700 transition-colors backdrop-blur-sm"
+            >
+              <Info size={20} className="mr-2" />
               More Info
             </button>
           </div>
@@ -68,7 +82,11 @@ const Dashboard: React.FC = () => {
         <h2 className="text-xl font-bold text-white mb-4">Trending Now</h2>
         <div className="flex space-x-4 overflow-x-auto no-scrollbar pb-4">
           {MOCK_MOVIES.slice(1).map((movie) => (
-            <div key={movie.id} className="flex-none w-32 md:w-40 group cursor-pointer">
+            <div 
+              key={movie.id} 
+              className="flex-none w-32 md:w-40 group cursor-pointer"
+              onClick={() => onSelectMedia(movie)}
+            >
               <div className="relative aspect-[2/3] rounded-lg overflow-hidden">
                 <img src={movie.cover} alt={movie.title} className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-300" />
                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-2">

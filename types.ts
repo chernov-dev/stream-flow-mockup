@@ -6,6 +6,8 @@ export enum ViewState {
   SERIES = 'SERIES',
   EPG = 'EPG',
   SETTINGS = 'SETTINGS',
+  DETAILS = 'DETAILS',
+  PLAYER = 'PLAYER',
 }
 
 export interface Profile {
@@ -24,14 +26,34 @@ export interface Channel {
   progress?: number;
 }
 
+export interface Episode {
+  id: string;
+  number: number;
+  title: string;
+  duration: string;
+  description: string;
+  thumbnail?: string;
+}
+
+export interface Season {
+  id: string;
+  number: number;
+  episodes: Episode[];
+}
+
 export interface MediaItem {
   id: string;
   title: string;
   cover: string;
+  backdrop?: string;
   rating: number;
   year: number;
   description: string;
   category: string; // Action, Drama, etc.
+  duration?: string;
+  cast?: string[];
+  director?: string;
+  seasons?: Season[];
 }
 
 export interface EPGItem {
